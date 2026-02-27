@@ -1,27 +1,36 @@
-name : CI Docker Build
+# Workflow pour construire et pousser une image Docker
+name: CI Docker Build
 
-on: push
+# Déclencheurs du workflow
+on:
+  push:
+    branches:
+      - main
 
+# Définition des tâches
 jobs:
-  initegration-contine:
-    name : Démonstration CI
+  # Tâche de construction de l'image Docker
+  build:
+    # Utiliser la dernière version d'Ubuntu
     runs-on: ubuntu-latest
 
-    env :
-      STEP1: "Le code vient d'être poussé sur Github"
-      
+    # Étapes à exécuter
     steps:
-      - name: Etape 1 - Initialisation
-        run: 
-          echo "Démarrage du pipeline d'intégration continue"
-          echo "STEP1= $STEP1"
-      - name: Etape 2 - Récupération du code
-        run: 
-          echo "Récupération du code source"
-          echo "STEP2= ${{ vars.STEP2}}"
-      - name: Etape 3 - Build
-        run: 
-          echo "Phase de build"
-          echo "${{ secrets.SECRETNAME }}"
-          
-      
+      # Récupérer le code du dépôt
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Se connecter à Docker Hub avec les identifiants secrets
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      # # Construire l'image Docker
+      # - name: Build image
+      #   run: docker build -t ${{ secrets.DOCKER_USERNAME }}/devops-static-website:latest .
+
+      # # Pousser l'image vers Docker Hub
+      # - name: Push image
+      #   run: docker push ${{ secrets.DOCKER_USERNAME }}/devops-static-website:latest
