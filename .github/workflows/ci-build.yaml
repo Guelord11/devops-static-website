@@ -1,0 +1,27 @@
+name : CI Docker Build
+
+on: push
+
+jobs:
+  initegration-contine:
+    name : Démonstration CI
+    runs-on: ubuntu-latest
+
+    env :
+      STEP1: "Le code vient d'être poussé sur Github"
+      
+    steps:
+      - name: Etape 1 - Initialisation
+        run: 
+          echo "Démarrage du pipeline d'intégration continue"
+          echo "STEP1= $STEP1"
+      - name: Etape 2 - Récupération du code
+        run: 
+          echo "Récupération du code source"
+          echo "STEP2= ${{ vars.STEP2}}"
+      - name: Etape 3 - Build
+        run: 
+          echo "Phase de build"
+          echo "${{ secrets.SECRETNAME }}"
+          
+      
