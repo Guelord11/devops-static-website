@@ -31,6 +31,17 @@ jobs:
       - name: Build image
         run: docker build -t ${{ secrets.DOCKER_USERNAME }}/devops-static-website:latest .
 
-      # Pousser l'image vers Docker Hub
+      # Pousser l'image vers Docker Hub 
       - name: Push image
         run: docker push ${{ secrets.DOCKER_USERNAME }}/devops-static-website:latest
+
+
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@0.20.0
+        with:
+          image-ref: moisawade/ci-html-demo:latest
+          format: table
+          severity: CRITICAL,HIGH
+          exit-code: 1
+          vuln-type: os,library
+          ignore-unfixed: true
